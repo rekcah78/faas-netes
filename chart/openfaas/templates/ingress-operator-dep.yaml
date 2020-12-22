@@ -33,6 +33,11 @@ spec:
         command:
           - ./ingress-operator
           - -logtostderr
+        {{- if .Values.securityContext }}
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsUser: 10001
+        {{- end }}
         env:
         - name: function_namespace
           value: {{ $functionNs | quote }}

@@ -30,6 +30,11 @@ spec:
             {{- .Values.faasIdler.resources | toYaml | nindent 12 }}
           image: {{ .Values.faasIdler.image }}
           imagePullPolicy: {{ .Values.openfaasImagePullPolicy }}
+        {{- if .Values.securityContext }}
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsUser: 10001
+        {{- end }}
           env:
             - name: gateway_url
               value: "http://gateway.{{ .Release.Namespace }}:8080/"

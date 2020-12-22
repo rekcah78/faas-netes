@@ -29,6 +29,11 @@ spec:
       - name: alertmanager
         image: {{ .Values.alertmanager.image }}
         imagePullPolicy: {{ .Values.openfaasImagePullPolicy }}
+        {{- if .Values.securityContext }}
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsUser: 10001
+        {{- end }}
         command:
           - "alertmanager"
           - "--config.file=/alertmanager.yml"

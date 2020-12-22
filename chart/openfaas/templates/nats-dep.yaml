@@ -32,6 +32,11 @@ spec:
           {{- .Values.nats.resources | toYaml | nindent 12 }}
         image: {{ .Values.nats.image }}
         imagePullPolicy: {{ .Values.openfaasImagePullPolicy }}
+        {{- if .Values.securityContext }}
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsUser: 10001
+        {{- end }}
         ports:
         - containerPort: 4222
           protocol: TCP
@@ -53,6 +58,11 @@ spec:
       - name: metrics
         image: {{ .Values.nats.metrics.image }}
         imagePullPolicy: {{ .Values.openfaasImagePullPolicy }}
+        {{- if .Values.securityContext }}
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsUser: 10001
+        {{- end }}
         ports:
         - containerPort: 7777
           protocol: TCP

@@ -34,6 +34,11 @@ spec:
           {{- .Values.queueWorker.resources | toYaml | nindent 12 }}
         image: {{ .Values.queueWorker.image }}
         imagePullPolicy: {{ .Values.openfaasImagePullPolicy }}
+        {{- if .Values.securityContext }}
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsUser: 10001
+        {{- end }}
         env:
         {{- if .Values.nats.external.enabled }}
         - name: faas_nats_address
